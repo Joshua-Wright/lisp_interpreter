@@ -17,7 +17,7 @@ struct type {
     type() : name("base"), parent_type(nullptr), all_grandparent_types(0) { }
 
     type(type *_parent_type, std::string name) : parent_type(_parent_type),
-                                                  all_grandparent_types(_parent_type->all_grandparent_types) {
+                                                 all_grandparent_types(_parent_type->all_grandparent_types) {
         all_grandparent_types.push_back(parent_type);
     }
 };
@@ -25,13 +25,14 @@ struct type {
 extern type *T_BASE;
 extern type *T_NUMERIC;
 extern type *T_INT;
+extern type *T_DECIMAL;
 extern type *T_FUNCTION;
 
 struct type_instance {
     type *this_type;
-    void *data;
+    void *type_data;
 
-    type_instance(type *this_type, void *data) : this_type(this_type), data(data) { }
+    type_instance(type *this_type, void *data) : this_type(this_type), type_data(data) { }
 };
 
 #endif //LISP_TYPE_H

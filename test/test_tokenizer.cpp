@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include "../src/type.h"
-#include "../src/tokenizer.h"
+#include "../src/input/tokenizer.h"
 
 int main(int argc, char const *argv[]) {
     using std::string;

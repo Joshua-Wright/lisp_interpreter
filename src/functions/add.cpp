@@ -7,7 +7,7 @@
 type_instance *add_ints::apply(const std::vector<type_instance *> &args) {
     long int sum = 0;
     for (size_t i = 0; i < args.size(); i++) {
-        sum += (long int) args[i]->data;
+        sum += (long int) args[i]->type_data;
     }
     return new type_instance(T_INT, (void *) sum);
 }

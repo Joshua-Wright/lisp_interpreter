@@ -7,27 +7,31 @@
 
 #include <vector>
 #include <string>
+#include "../type.h"
 
 struct token {
     enum token_type {
         OPEN_PARENTHESIS,
         CLOSE_PARENTHESIS,
         IDENTIFIER,
-        NUMBER,
+        INT,
+        DECIMAL,
         NA
     };
     token_type type;
-    std::string value;
+    std::string literal;
 
-    token(const std::string &value, token_type type) : value(value), type(type) { }
-    token() : value(""), type(NA) {}
+    token(const std::string &value, token_type type) : literal(value), type(type) { }
+
+    token() : literal(""), type(NA) { }
 };
 
 struct ast_node {
-    token val;
+    token val_token;
+    type_instance *val;
     std::vector<ast_node> children;
 
-    ast_node(const token &val) : val(val) { }
+    ast_node(const token &val) : val_token(val), val(nullptr) { }
 };
 
 

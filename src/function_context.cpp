@@ -3,7 +3,7 @@
 //
 
 #include <algorithm>
-#include "function_matcher.h"
+#include "function_context.h"
 #include "functions/add.h"
 
 base_function *function_context::get_function(const std::string &name, const std::vector<type *> &arg_types) {
@@ -18,7 +18,6 @@ base_function *function_context::get_function(const std::string &name, const std
 function_context::function_context() {
     functions.push_back(new add_ints());
 }
-
 
 function_context global_function_context;
 

@@ -40,7 +40,7 @@ class token_stream {
         }
     }
 
-    bool number(const char c) {
+    bool is_numeric(const char c) {
         /* todo add support for negative numbers */
         return (c >= '0' && c <= '9') || c == '.';
     }
@@ -70,13 +70,19 @@ public:
                 buf.push_back(instream.get());
             }
             return token(buf, token::IDENTIFIER);
-        } else if (number(c)) {
+        } else if (is_numeric(c)) {
             std::string buf;
             buf.push_back(c);
-            while (number(instream.peek())) {
+            while (is_numeric(instream.peek())) {
                 buf.push_back(instream.get());
             }
-            return token(buf, token::IDENTIFIER);
+            // numbers with decimal points are decimals
+            // todo: this will break if we implement scientific notation
+            if (buf.find('.') != std::string::npos) {
+                return token(buf, token::DECIMAL);
+            } else {
+                return token(buf, token::INT);
+            };
         } else {
             throw std::runtime_error("unknown character: "
                                      + std::to_string(c)
@@ -89,8 +95,8 @@ public:
             buffer_full = true;
             buffer = t;
         } else {
-            std::cerr << "buffer " << buffer.value << std::endl;
-            std::cerr << "tried to put back " << t.value << std::endl;
+            std::cerr << "buffer " << buffer.literal << std::endl;
+            std::cerr << "tried to put back " << t.literal << std::endl;
             throw std::runtime_error("put back on full buffer");
         }
     }
@@ -110,7 +116,8 @@ ast_node parse_expression(token_stream &in) {
         token t = in.get();
         switch (t.type) {
             case token::IDENTIFIER:
-            case token::NUMBER:
+            case token::INT:
+            case token::DECIMAL:
                 cur.children.push_back(ast_node(t));
                 break;
             case token::OPEN_PARENTHESIS:
@@ -132,11 +139,26 @@ ast_node parse_expression(const std::string &input) {
 
 
 void print_ast(const ast_node &head, size_t depth) {
-    for (size_t i=0; i<depth; i++) {
+    for (size_t i = 0; i < depth; i++) {
         std::cout << "  ";
     }
-    std::cout << head.val.value << std::endl;
-    for (const ast_node& n : head.children) {
+    std::cout << head.val_token.literal << " ";
+    switch (head.val_token.type) {
+        case token::IDENTIFIER:
+            std::cout << "identifier";
+            break;
+        case token::INT:
+            std::cout << "int";
+            break;
+        default:
+            std::cout << "other";
+            break;
+    }
+    std::cout << std::endl;
+    for (const ast_node &n : head.children) {
         print_ast(n, depth + 1);
     }
 }
+
+
+
