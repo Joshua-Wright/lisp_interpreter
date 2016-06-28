@@ -10,19 +10,19 @@
 #include "functions/base_function.h"
 
 
-class _function_matcher {
+class function_context {
 
     std::vector<base_function *> functions;
 
 public:
 
-    _function_matcher();
+    function_context();
 
 //    void add_function(const function_type func, const std::vector<type *> &args);
 
-    base_function *get_function(const std::string &name, const std::vector<const type *> &arg_types);
+    base_function *get_function(const std::string &name, const std::vector<type *> &arg_types);
 };
 
-extern _function_matcher function_matcher;
+extern function_context global_function_context;
 
 #endif //LISP_FUNCTION_MATCHER_H

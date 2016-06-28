@@ -5,7 +5,7 @@
 #include "type.h"
 
 
-const type *T_BASE = new type();
-const type *T_NUMERIC = new type(T_BASE, "numeric");
-const type *T_INT = new type(T_NUMERIC, "int");
-const type *T_FUNCTION = new type(T_BASE, "function");
+type *T_BASE = new type();
+type *T_NUMERIC = new type(T_BASE, "numeric");
+type *T_INT = new type(T_NUMERIC, "int");
+type *T_FUNCTION = new type(T_BASE, "function");

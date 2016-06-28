@@ -14,11 +14,11 @@ class add_ints : public base_function {
 
 public:
 
-    virtual type_instance *apply(const std::vector<const type_instance*> &args) const;
+    virtual type_instance *apply(const std::vector<type_instance *> &args);
 
-    virtual bool matches(const std::vector<const type *> &arg_types) const;
+    virtual bool matches(const std::vector<type *> &arg_types);
 
-    virtual std::string name() const { return "add"; }
+    virtual std::string name() { return "add"; }
 
 };
 

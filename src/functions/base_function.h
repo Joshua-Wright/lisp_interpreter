@@ -13,11 +13,11 @@ class base_function : public type_instance {
 public:
     base_function() : type_instance(T_FUNCTION, this) { }
 
-    virtual bool matches(const std::vector<const type *> &arg_types) const = 0;
+    virtual bool matches(const std::vector<type *> &arg_types) = 0;
 
-    virtual type_instance *apply(const std::vector<const type_instance*> &args) const = 0;
+    virtual type_instance *apply(const std::vector<type_instance*> &args) = 0;
 
-    virtual std::string name() const = 0;
+    virtual std::string name() = 0;
 };
 
 
