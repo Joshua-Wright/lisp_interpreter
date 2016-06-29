@@ -20,14 +20,10 @@ void parse_ast(ast_node &head, function_context &context) {
             break;
         case token::IDENTIFIER: {
             // assume all identifiers refer to functions
-            // todo this will break when we have variables
-            std::vector<type *> arg_types(head.children.size());
-            std::transform(head.children.begin(), head.children.end(), arg_types.begin(), [](ast_node n) {
-                return n.val->this_type;
-            });
-            type_instance *func = new type_instance(T_FUNCTION, (void *) context.get_function(head.val_token.literal, arg_types));
-            // don't evaluate functions here, do it in the evaluator
-            head.val = func;
+            // todo this will break when we have variables?
+            // can't really do anything about this because we can't guarantee the return type of
+            // a function, and therefore can't guarantee what types the children will really be
+            head.val = nullptr;
             break;
         }
         default:

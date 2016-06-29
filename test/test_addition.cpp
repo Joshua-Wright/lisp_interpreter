@@ -18,13 +18,13 @@ int main(int argc, char const *argv[]) {
         test(result->type_data == (void *) 3, "addition error");
     }
     { // test the evaluator too
-        std::string expression = "(add 3 4)";
+        std::string expression = "(add (add 12 30) (add 3 4))";
         ast_node head = parse_expression(expression);
         print_ast(head);
         parse_ast(head, global_function_context);
         type_instance *result = evaluate_ast(head, global_function_context);
 
-        test(((long int) result->type_data) == 7, "evaluation and addition");
+        test(((long int) result->type_data) == 12 + 30 + 3 + 4, "evaluation and addition");
     }
 
     std::cout << "tests complete" << std::endl;

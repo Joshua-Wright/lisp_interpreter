@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "tokenizer.h"
+#include "../debug.h"
 
 class token_stream {
     token buffer;
