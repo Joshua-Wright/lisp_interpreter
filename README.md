@@ -1,4 +1,5 @@
 # lisp_interpreter
+...well, lisp-ish: syntax: yes, functionality: somewhat.  
 lisp interpreter in C++, written just for fun
 
 ### what works:
