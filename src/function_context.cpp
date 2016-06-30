@@ -19,5 +19,14 @@ function_context::function_context() {
     functions.push_back(new add_ints());
 }
 
-function_context global_function_context;
+type_instance *function_context::apply_function(const std::string &name, const std::vector<type_instance *> &args) {
+    std::vector<type *> arg_types(args.size());
+    for (size_t i = 0; i < arg_types.size(); i++) {
+        arg_types[i] = args[i]->this_type;
+    }
+    base_function *base_function1 = get_function(name, arg_types);
+    return base_function1->apply(args);
+}
 
+
+function_context global_function_context;

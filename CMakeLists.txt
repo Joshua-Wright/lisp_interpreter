@@ -21,8 +21,6 @@ set(SOURCE_FILES
         src/input/evaluator.h
         src/input/tokenizer.cpp
         src/input/tokenizer.h
-        src/input/parser.cpp
-        src/input/parser.h
         src/type.cpp
         src/type.h
         src/functions/add.cpp
@@ -32,7 +30,7 @@ set(SOURCE_FILES
         src/debug.h
         )
 
-add_executable(lisp ${SOURCE_FILES} src/input/evaluator.cpp src/input/evaluator.h src/debug.cpp src/input/parser.cpp src/input/parser.h)
+add_executable(lisp ${SOURCE_FILES} src/input/evaluator.cpp src/input/evaluator.h src/debug.cpp)
 
 
 add_executable(test_addition ${SOURCE_FILES} test/test_addition.cpp)

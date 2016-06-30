@@ -28,15 +28,10 @@ type_instance *evaluate_ast(ast_node &head, function_context &context) {
             // functions must be applied
             // assume all identifiers refer to functions
             // todo this will break when we have variables (e.g. from user defined functions)
-            std::vector<type *> arg_types;
-            for (auto arg : child_results) {
-                arg_types.push_back(arg->this_type);
-            }
-            base_function *base_function1 = context.get_function(head.val_token.literal, arg_types);
-            return base_function1->apply(child_results);
+            return context.apply_function(head.val_token.literal, child_results);
         }
         default:
-            throw std::runtime_error("bad token in tree");
+            throw std::runtime_error("bad token in tree: " + head.val_token.literal);
     }
 }
 

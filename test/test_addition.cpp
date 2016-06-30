@@ -4,7 +4,6 @@
 #include "../src/debug.h"
 #include "../src/function_context.h"
 #include "../src/input/tokenizer.h"
-#include "../src/input/parser.h"
 #include "../src/input/evaluator.h"
 
 int main(int argc, char const *argv[]) {
@@ -21,10 +20,9 @@ int main(int argc, char const *argv[]) {
         std::string expression = "(add (add 12 30) (add 3 4))";
         ast_node head = parse_expression(expression);
         print_ast(head);
-        parse_ast(head, global_function_context);
         type_instance *result = evaluate_ast(head, global_function_context);
 
-        test(((long int) result->type_data) == 12 + 30 + 3 + 4, "evaluation and addition");
+        test(result->int_data == 12 + 30 + 3 + 4, "evaluation and addition");
     }
 
     std::cout << "tests complete" << std::endl;

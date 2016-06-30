@@ -30,9 +30,17 @@ extern type *T_FUNCTION;
 
 struct type_instance {
     type *this_type;
-    void *type_data;
+    union {
+        long int int_data;
+        double double_data;
+        void *type_data;
+    };
 
     type_instance(type *this_type, void *data) : this_type(this_type), type_data(data) { }
+
+    type_instance(long int data) : this_type(T_INT), int_data(data) { }
+
+    type_instance(double data) : this_type(T_DECIMAL), double_data(data) { }
 };
 
 #endif //LISP_TYPE_H
