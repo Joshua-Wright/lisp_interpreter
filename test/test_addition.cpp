@@ -19,10 +19,12 @@ int main(int argc, char const *argv[]) {
     { // test the evaluator too
         std::string expression = "(add (add 12 30) (add 3 4))";
         ast_node head = parse_expression(expression);
-        print_ast(head);
         type_instance *result = evaluate_ast(head, global_function_context);
-
         test(result->int_data == 12 + 30 + 3 + 4, "evaluation and addition");
+    }
+    {
+        type_instance *result = evaluate_ast(parse_expression("(add 1.5 3.75)"), global_function_context);
+        test(result->decimal_data == 1.5 + 3.75, "floating point addition");
     }
 
     std::cout << "tests complete" << std::endl;

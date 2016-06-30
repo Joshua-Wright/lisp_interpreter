@@ -32,7 +32,7 @@ struct type_instance {
     type *this_type;
     union {
         long int int_data;
-        double double_data;
+        double decimal_data;
         void *type_data;
     };
 
@@ -40,7 +40,7 @@ struct type_instance {
 
     type_instance(long int data) : this_type(T_INT), int_data(data) { }
 
-    type_instance(double data) : this_type(T_DECIMAL), double_data(data) { }
+    type_instance(double data) : this_type(T_DECIMAL), decimal_data(data) { }
 };
 
 #endif //LISP_TYPE_H

@@ -12,7 +12,7 @@ using std::transform;
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "InfiniteRecursion"
 
-type_instance *evaluate_ast(ast_node &head, function_context &context) {
+type_instance *evaluate_ast(const ast_node &head, function_context &context) {
     // evaluate all children
     vector<type_instance *> child_results(head.children.size());
     transform(head.children.begin(), head.children.end(), child_results.begin(), [&context](ast_node n) {

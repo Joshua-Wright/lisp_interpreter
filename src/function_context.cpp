@@ -17,6 +17,7 @@ base_function *function_context::get_function(const std::string &name, const std
 
 function_context::function_context() {
     functions.push_back(new add_ints());
+    functions.push_back(new add_int_double());
 }
 
 type_instance *function_context::apply_function(const std::string &name, const std::vector<type_instance *> &args) {
