@@ -2,16 +2,19 @@
 // Created by j0sh on 6/26/16.
 //
 
+class base_function;
+
 #ifndef LISP_BASE_FUNCTION_H
 #define LISP_BASE_FUNCTION_H
 
 #include <vector>
 #include "../type.h"
+#include "../type_instance.h"
 
-class base_function : public type_instance {
+class base_function {
 
 public:
-    base_function() : type_instance(T_FUNCTION, this) { }
+    base_function() { }
 
     virtual bool matches(const std::vector<type *> &arg_types) = 0;
 

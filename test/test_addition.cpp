@@ -10,24 +10,30 @@ int main(int argc, char const *argv[]) {
 
     { // test without evaluation
         base_function *func = global_function_context.get_function("add", {T_INT, T_INT});
-        type_instance arg1(T_INT, (void *) 1);
-        type_instance arg2(T_INT, (void *) 2);
-        type_instance *result = func->apply(std::vector<type_instance *>{&arg1, &arg2});
+        type_instance *arg1 = new type_instance(1);
+        type_instance *arg2 = new type_instance(2);
+        type_instance *result = func->apply(std::vector<type_instance *>{arg1, arg2});
 
-        test(result->type_data == (void *) 3, "addition error");
+        test(result->int_data == 3, "addition error");
     }
     { // test the evaluator too
         std::string expression = "(add (add 12 30) (add 3 4))";
         ast_node head = parse_expression(expression);
         type_instance *result = evaluate_ast(head, global_function_context);
         test(result->int_data == 12 + 30 + 3 + 4, "evaluation and addition");
+        test(result->this_type == T_INT, "addition");
     }
     {
-        type_instance *result = evaluate_ast(parse_expression("(add 1.5 3.75)"), global_function_context);
-        test(result->decimal_data == 1.5 + 3.75, "floating point addition");
+        type_instance *result = evaluate_ast(parse_expression("(add 15 3.75)"), global_function_context);
+        test(result->decimal_data == 15 + 3.75, "floating point addition");
+        test(result->this_type == T_DECIMAL, "floating point addition");
+    }
+    {
+        type_instance *result = evaluate_ast(parse_expression("(add)"), global_function_context);
+        test(result->int_data == 0, "empty function call");
+        test(result->this_type == T_INT, "empty function call");
     }
 
     std::cout << "tests complete" << std::endl;
-
     return 0;
 }

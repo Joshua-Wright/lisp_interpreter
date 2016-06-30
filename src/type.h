@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 struct type {
     std::string name;
@@ -26,21 +27,9 @@ extern type *T_BASE;
 extern type *T_NUMERIC;
 extern type *T_INT;
 extern type *T_DECIMAL;
+extern type *T_SEQUENCE;
+extern type *T_VECTOR;
+extern type *T_LIST;
 extern type *T_FUNCTION;
-
-struct type_instance {
-    type *this_type;
-    union {
-        long int int_data;
-        double decimal_data;
-        void *type_data;
-    };
-
-    type_instance(type *this_type, void *data) : this_type(this_type), type_data(data) { }
-
-    type_instance(long int data) : this_type(T_INT), int_data(data) { }
-
-    type_instance(double data) : this_type(T_DECIMAL), decimal_data(data) { }
-};
 
 #endif //LISP_TYPE_H

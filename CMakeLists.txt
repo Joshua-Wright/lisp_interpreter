@@ -15,6 +15,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 
 set(SOURCE_FILES
+        src/debug.cpp
+        src/debug.h
         src/function_context.cpp
         src/function_context.h
         src/input/evaluator.cpp
@@ -26,13 +28,13 @@ set(SOURCE_FILES
         src/functions/add.cpp
         src/functions/add.h
         src/functions/base_function.h
-        src/debug.cpp
-        src/debug.h
-        )
+        src/functions/vec.cpp
+        src/functions/vec.h
+        src/functions/get_element.cpp src/functions/get_element.h src/type_instance.h)
 
 add_executable(lisp ${SOURCE_FILES} src/input/evaluator.cpp src/input/evaluator.h src/debug.cpp)
 
 
-add_executable(test_addition ${SOURCE_FILES} test/test_addition.cpp)
-
 add_executable(test_tokenizer src/input/tokenizer.cpp src/input/tokenizer.h test/test_tokenizer.cpp)
+add_executable(test_addition ${SOURCE_FILES} test/test_addition.cpp)
+add_executable(test_vec ${SOURCE_FILES} test/test_vec.cpp)
