@@ -1,5 +1,4 @@
-// (c) Copyright 2015 Josh Wright
-
+// (c) Copyright 2016 Josh Wright
 #include "debug.h"
 
 void __test(bool expr, const char* expr_str, const std::string &message, const char *file, int line) {

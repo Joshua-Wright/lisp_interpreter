@@ -1,7 +1,4 @@
-//
-// Created by j0sh on 6/17/16.
-//
-
+// (c) Copyright 2016 Josh Wright
 #ifndef LISP_TOKENIZER_H
 #define LISP_TOKENIZER_H
 

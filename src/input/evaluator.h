@@ -1,4 +1,4 @@
-// (c) Copyright 2015 Josh Wright
+// (c) Copyright 2016 Josh Wright
 #pragma once
 
 #include "../type.h"

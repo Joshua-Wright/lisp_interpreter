@@ -1,7 +1,4 @@
-//
-// Created by j0sh on 6/26/16.
-//
-
+// (c) Copyright 2016 Josh Wright
 #include "type.h"
 
 type *T_BASE = new type();

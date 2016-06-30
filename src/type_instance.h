@@ -1,5 +1,4 @@
-// (c) Copyright 2015 Josh Wright
-
+// (c) Copyright 2016 Josh Wright
 
 class type_instance;
 

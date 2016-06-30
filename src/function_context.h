@@ -1,7 +1,4 @@
-//
-// Created by j0sh on 6/26/16.
-//
-
+// (c) Copyright 2016 Josh Wright
 #ifndef LISP_FUNCTION_MATCHER_H
 #define LISP_FUNCTION_MATCHER_H
 

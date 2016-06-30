@@ -1,7 +1,4 @@
-//
-// Created by j0sh on 6/17/16.
-//
-
+// (c) Copyright 2016 Josh Wright
 #include <iterator>
 #include <algorithm>
 #include <iostream>

@@ -1,4 +1,4 @@
-// (c) Copyright 2015 Josh Wright
+// (c) Copyright 2016 Josh Wright
 #include "vec.h"
 
 type_instance *vec::apply(const std::vector<type_instance *> &args) {
