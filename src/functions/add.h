@@ -9,7 +9,7 @@
 
 class add_ints : public base_function {
 public:
-    virtual type_instance *apply(const std::vector<type_instance *> &args);
+    virtual type_instance apply(const std::vector<type_instance> &args);
 
     virtual bool matches(const std::vector<type *> &arg_types);
 
@@ -19,7 +19,7 @@ public:
 
 class add_int_double : public base_function {
 public:
-    virtual type_instance *apply(const std::vector<type_instance *> &args);
+    virtual type_instance apply(const std::vector<type_instance> &args);
 
     virtual bool matches(const std::vector<type *> &arg_types);
 

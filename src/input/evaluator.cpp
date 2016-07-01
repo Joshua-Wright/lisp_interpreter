@@ -11,17 +11,17 @@ using std::transform;
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "InfiniteRecursion"
 
-type_instance *evaluate_ast(const ast_node &head, function_context &context) {
+type_instance evaluate_ast(const ast_node &head, function_context &context) {
     // evaluate all children
-    vector<type_instance *> child_results(head.children.size());
-    transform(head.children.begin(), head.children.end(), child_results.begin(), [&context](ast_node n) {
-        return evaluate_ast(n, context);
-    });
+    vector<type_instance> child_results;
+    for (size_t i = 0; i < head.children.size(); i++) {
+        child_results.push_back(evaluate_ast(head.children[i], context));
+    }
     // finally, evaluate this expression
     switch (head.val_token.type) {
         case token::INT:
         case token::DECIMAL:
-            // literals are simple
+            // literals are pre-evaluated
             return head.val;
         case token::IDENTIFIER: {
             // functions must be applied

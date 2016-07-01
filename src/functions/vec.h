@@ -12,7 +12,7 @@ public:
         return true;
     }
 
-    virtual type_instance *apply(const std::vector<type_instance *> &args);
+    virtual type_instance apply(const std::vector<type_instance> &args) override;
 
     virtual std::string name() override {
         return "vec";

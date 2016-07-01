@@ -21,10 +21,10 @@ function_context::function_context() {
     functions.push_back(new get_element());
 }
 
-type_instance *function_context::apply_function(const std::string &name, const std::vector<type_instance *> &args) {
+type_instance function_context::apply_function(const std::string &name, const std::vector<type_instance> &args) {
     std::vector<type *> arg_types(args.size());
     for (size_t i = 0; i < arg_types.size(); i++) {
-        arg_types[i] = args[i]->this_type;
+        arg_types[i] = args[i].this_type;
     }
     base_function *base_function1 = get_function(name, arg_types);
     return base_function1->apply(args);

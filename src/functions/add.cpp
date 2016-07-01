@@ -1,13 +1,14 @@
 // (c) Copyright 2016 Josh Wright
 #include <vector>
 #include "add.h"
+#include "../debug.h"
 
-type_instance *add_ints::apply(const std::vector<type_instance *> &args) {
+type_instance add_ints::apply(const std::vector<type_instance> &args) {
     long int sum = 0;
     for (size_t i = 0; i < args.size(); i++) {
-        sum += args[i]->int_data;
+        sum += args[i].int_data;
     }
-    return new type_instance(sum);
+    return type_instance(sum);
 }
 
 bool add_ints::matches(const std::vector<type *> &arg_types) {
@@ -20,16 +21,16 @@ bool add_ints::matches(const std::vector<type *> &arg_types) {
 }
 
 
-type_instance *add_int_double::apply(const std::vector<type_instance *> &args) {
-    double sum = 0;
-    for (auto arg : args) {
-        if (arg->this_type == T_INT) {
-            sum += arg->int_data;
-        } else if (arg->this_type == T_DECIMAL) {
-            sum += arg->decimal_data;
+type_instance add_int_double::apply(const std::vector<type_instance> &args) {
+    type_instance sum(0.0);
+    for (auto &arg : args) {
+        if (arg.this_type == T_INT) {
+            sum.decimal_data += arg.int_data;
+        } else if (arg.this_type == T_DECIMAL) {
+            sum.decimal_data += arg.decimal_data;
         }
     }
-    return new type_instance(sum);
+    return sum;
 }
 
 bool add_int_double::matches(const std::vector<type *> &arg_types) {

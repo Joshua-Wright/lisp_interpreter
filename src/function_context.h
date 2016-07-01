@@ -15,7 +15,7 @@ public:
 
     function_context();
 
-    type_instance *apply_function(const std::string &name, const std::vector<type_instance *> &args);
+    type_instance apply_function(const std::string &name, const std::vector<type_instance> &args);
 
     base_function *get_function(const std::string &name, const std::vector<type *> &arg_types);
 };

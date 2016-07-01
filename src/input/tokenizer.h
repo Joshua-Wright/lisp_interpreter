@@ -26,10 +26,10 @@ struct token {
 
 struct ast_node {
     token val_token;
-    type_instance *val;
+    type_instance val;
     std::vector<ast_node> children;
 
-    ast_node(const token &val) : val_token(val), val(nullptr) { }
+    ast_node(const token &val) : val_token(val) { }
 };
 
 

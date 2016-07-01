@@ -16,7 +16,7 @@ public:
 
     virtual bool matches(const std::vector<type *> &arg_types) = 0;
 
-    virtual type_instance *apply(const std::vector<type_instance *> &args) = 0;
+    virtual type_instance apply(const std::vector<type_instance> &args) = 0;
 
     virtual std::string name() = 0;
 };

@@ -11,8 +11,8 @@ public:
                arg_types[1] == T_VECTOR;
     }
 
-    virtual type_instance *apply(const std::vector<type_instance *> &args) override {
-        return args[1]->vector_data.at((unsigned long) args[0]->int_data);
+    virtual type_instance apply(const std::vector<type_instance> &args) override {
+        return args[1].vector_data.at((unsigned long) args[0].int_data);
     }
 
     virtual std::string name() override {
