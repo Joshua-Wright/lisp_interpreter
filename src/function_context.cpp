@@ -5,6 +5,7 @@
 #include "functions/vec.h"
 #include "functions/str.h"
 #include "functions/get_element.h"
+#include "functions/map.h"
 
 LISP_FUNC_IMPL(noop) {
     return args[0];
@@ -24,17 +25,24 @@ function_context::function_pair function_context::get_function(const std::string
     throw std::runtime_error("function not found: " + name);
 }
 
+#define ADD_FUNCTION(name, identifier) functions.push_back(function_pair(name, lisp_ ## identifier ## _impl, lisp_ ## identifier ## _matcher));
 function_context::function_context() {
-    functions.push_back(function_pair("add", lisp_add_ints_impl, lisp_add_ints_matcher));
-    functions.push_back(function_pair("add", lisp_add_int_double_impl, lisp_add_int_double_matcher));
-    functions.push_back(function_pair("vec", lisp_vec_impl, lisp_vec_matcher));
-    functions.push_back(function_pair("get", lisp_get_impl, lisp_get_matcher));
-    functions.push_back(function_pair("str", lisp_str_impl, lisp_str_matcher));
+    ADD_FUNCTION("add", add_ints);
+    ADD_FUNCTION("add", add_int_double);
+    ADD_FUNCTION("vec", vec);
+    ADD_FUNCTION("get", get);
+    ADD_FUNCTION("str", str);
+    ADD_FUNCTION("map", map_vec);
+    ADD_FUNCTION("map", map_splat);
 }
 
 type_instance function_context::apply_function(const type_instance &func_type, const std::vector<type_instance> &args) {
     function_pair func = get_function(func_type.get<identifier>().str, args);
     return (*func.func)(args, this);
+}
+
+type_instance function_context::apply_function(const type_instance &func_type, const type_instance &arg) {
+    return apply_function(func_type, vec(1, arg));
 }
 
 bool function_context::has_function_by_name(const std::string &name) {

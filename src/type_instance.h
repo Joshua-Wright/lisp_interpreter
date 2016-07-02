@@ -17,11 +17,13 @@ struct identifier {
     std::string str;
 };
 
+typedef std::vector<type_instance> vec;
+
 typedef boost::variant<
         long,
         double,
         std::string,
-        std::vector<type_instance>,
+        vec,
         std::list<type_instance>,
         identifier
 > _type_instance;
@@ -66,8 +68,28 @@ public:
         return get<identifier>();
     }
 
-    std::vector<type_instance> get_vec() const {
-        return get<std::vector<type_instance>>();
+    vec get_vec() const {
+        return get<vec>();
+    }
+
+    bool is_str() const {
+        return is<std::string>();
+    }
+
+    bool is_int() const {
+        return is<long>();
+    }
+
+    bool is_decimal() const {
+        return is<double>();
+    }
+
+    bool is_identifier() const {
+        return is<identifier>();
+    }
+
+    bool is_vec() const {
+        return is<vec>();
     }
 };
 

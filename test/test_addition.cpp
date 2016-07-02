@@ -1,5 +1,4 @@
 // (c) Copyright 2016 Josh Wright
-
 #include <iostream>
 #include "../src/function_context.h"
 #include "../src/input/tokenizer.h"
