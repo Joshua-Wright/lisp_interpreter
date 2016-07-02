@@ -9,7 +9,8 @@ project(lisp)
 #project(assembler C ASM) # this enables building the assembly part of the code
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconcepts")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgtest")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
@@ -34,9 +35,10 @@ set(SOURCE_FILES
         src/functions/map.cpp
         src/functions/map.h)
 
-
-add_executable(test_tokenizer src/input/tokenizer.cpp src/input/tokenizer.h test/test_tokenizer.cpp)
-add_executable(test_addition ${SOURCE_FILES} test/test_addition.cpp)
-add_executable(test_vec ${SOURCE_FILES} test/test_vec.cpp)
-add_executable(test_str ${SOURCE_FILES} test/test_str.cpp)
-add_executable(test_map ${SOURCE_FILES} test/test_map.cpp)
+set(TEST_FILES
+        test/all_tests.cpp
+        test/add.h
+        test/map.h
+        test/str.h
+        test/vec.h test/get.h)
+add_executable(all_test ${SOURCE_FILES} ${TEST_FILES})
