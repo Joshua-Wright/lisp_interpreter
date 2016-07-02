@@ -3,18 +3,24 @@
 
 #include "base_function.h"
 #include "../type.h"
+#include "../function_context.h"
 
-class vec : public base_function {
-public:
+LISP_FUNC_IMPL(vec);
 
-    virtual bool matches(const std::vector<type *> &arg_types) override {
-        // we can make a vector of anything!
-        return true;
-    }
+LISP_FUNC_MATCHER(vec);
 
-    virtual type_instance apply(const std::vector<type_instance> &args) override;
 
-    virtual std::string name() override {
-        return "vec";
-    }
-};
+//class vec : public base_function {
+//public:
+//
+//    virtual bool matches(const std::vector<type *> &arg_types) override {
+//        // we can make a vector of anything!
+//        return true;
+//    }
+//
+//    virtual type_instance apply(const std::vector<type_instance> &args) override;
+//
+//    virtual std::string name() override {
+//        return "vec";
+//    }
+//};

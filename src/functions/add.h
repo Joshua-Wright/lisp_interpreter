@@ -7,24 +7,15 @@
 #include "../function_context.h"
 #include "../type.h"
 
-class add_ints : public base_function {
-public:
-    virtual type_instance apply(const std::vector<type_instance> &args);
 
-    virtual bool matches(const std::vector<type *> &arg_types);
+LISP_FUNC_IMPL(add_ints);
 
-    virtual std::string name() { return "add"; }
-};
+LISP_FUNC_MATCHER(add_ints);
 
 
-class add_int_double : public base_function {
-public:
-    virtual type_instance apply(const std::vector<type_instance> &args);
+LISP_FUNC_IMPL(add_int_double);
 
-    virtual bool matches(const std::vector<type *> &arg_types);
-
-    virtual std::string name() { return "add"; }
-};
+LISP_FUNC_MATCHER(add_int_double);
 
 
 #endif //LISP_ADD_H

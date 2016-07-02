@@ -5,29 +5,43 @@
 #include "functions/vec.h"
 #include "functions/get_element.h"
 
-base_function *function_context::get_function(const std::string &name, const std::vector<type *> &arg_types) {
-    for (base_function *func: functions) {
-        if (func->name() == name && func->matches(arg_types)) {
-            return func;
+LISP_FUNC_IMPL(noop) {
+    return args[0];
+}
+
+LISP_FUNC_MATCHER(noop) {
+    return args.size() > 0;
+}
+
+
+function_context::function_pair function_context::get_function(const std::string &name, const std::vector<type_instance> &arg_types) {
+    for (function_pair &p : functions) {
+        if (p.name == name && (*p.matcher)(arg_types)) {
+            return p;
         }
     }
-    return nullptr;
+    throw std::runtime_error("function not found: " + name);
 }
 
 function_context::function_context() {
-    functions.push_back(new add_ints());
-    functions.push_back(new add_int_double());
-    functions.push_back(new vec());
-    functions.push_back(new get_element());
+    functions.push_back(function_pair("add", lisp_add_ints_impl, lisp_add_ints_matcher));
+    functions.push_back(function_pair("add", lisp_add_int_double_impl, lisp_add_int_double_matcher));
+    functions.push_back(function_pair("vec", lisp_vec_impl, lisp_vec_matcher));
+    functions.push_back(function_pair("get", lisp_get_impl, lisp_get_matcher));
 }
 
-type_instance function_context::apply_function(const std::string &name, const std::vector<type_instance> &args) {
-    std::vector<type *> arg_types(args.size());
-    for (size_t i = 0; i < arg_types.size(); i++) {
-        arg_types[i] = args[i].this_type;
+type_instance function_context::apply_function(const type_instance &func_type, const std::vector<type_instance> &args) {
+    function_pair func = get_function(func_type.get<identifier>().str, args);
+    return (*func.func)(args, this);
+}
+
+bool function_context::has_function_by_name(const std::string &name) {
+    for (function_pair &p: functions) {
+        if (p.name == name) {
+            return true;
+        }
     }
-    base_function *base_function1 = get_function(name, arg_types);
-    return base_function1->apply(args);
+    return false;
 }
 
 

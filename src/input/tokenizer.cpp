@@ -25,7 +25,9 @@ void evaluate_literals(ast_node &head) {
             // todo this will break when we have variables?
             // can't really do anything about this because we can't guarantee the return type of
             // a function, and therefore can't guarantee what types the children will really be
-            head.val = type_instance();
+            identifier i;
+            i.str = head.val_token.literal;
+            head.val = type_instance(i);
             break;
         }
         default:
@@ -137,7 +139,8 @@ ast_node parse_expression(token_stream &in) {
         throw std::runtime_error("invalid token");
     }
 
-    ast_node cur(in.get());
+    // this first one is the function call
+    ast_node cur(in.get(), true);
     while (true) {
         token t = in.get();
         switch (t.type) {

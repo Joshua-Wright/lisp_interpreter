@@ -1,46 +1,43 @@
 // (c) Copyright 2016 Josh Wright
 #include <vector>
 #include "add.h"
+#include "../type_instance.h"
 #include "../debug.h"
 
-type_instance add_ints::apply(const std::vector<type_instance> &args) {
+LISP_FUNC_IMPL(add_ints) {
     long int sum = 0;
-    for (size_t i = 0; i < args.size(); i++) {
-        sum += args[i].int_data;
+    for (auto &arg : args) {
+        sum += arg.get<long>();
     }
     return type_instance(sum);
 }
 
-bool add_ints::matches(const std::vector<type *> &arg_types) {
-    for (auto type : arg_types) {
-        if (type != T_INT) {
+LISP_FUNC_MATCHER(add_ints) {
+    for (auto &t : args) {
+        if (!t.is<long>()) {
             return false;
         }
     }
     return true;
 }
 
-
-type_instance add_int_double::apply(const std::vector<type_instance> &args) {
-    type_instance sum(0.0);
+LISP_FUNC_IMPL(add_int_double) {
+    double sum = 0;
     for (auto &arg : args) {
-        if (arg.this_type == T_INT) {
-            sum.decimal_data += arg.int_data;
-        } else if (arg.this_type == T_DECIMAL) {
-            sum.decimal_data += arg.decimal_data;
+        if (arg.is<double>()) {
+            sum += arg.get<double>();
+        } else if (arg.is<long>()) {
+            sum += arg.get<long>();
         }
     }
-    return sum;
+    return type_instance(sum);
 }
 
-bool add_int_double::matches(const std::vector<type *> &arg_types) {
-    for (auto type : arg_types) {
-        if (type != T_INT && type != T_DECIMAL) {
+LISP_FUNC_MATCHER(add_int_double) {
+    for (auto &t : args) {
+        if (!(t.is<long>() || t.is<double>())) {
             return false;
         }
     }
     return true;
 }
-
-
-

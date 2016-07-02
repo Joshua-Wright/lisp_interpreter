@@ -27,9 +27,10 @@ struct token {
 struct ast_node {
     token val_token;
     type_instance val;
+    bool is_function_call;
     std::vector<ast_node> children;
 
-    ast_node(const token &val) : val_token(val) { }
+    ast_node(const token &val, const bool called = false) : val_token(val), is_function_call(called) { }
 };
 
 
