@@ -50,6 +50,10 @@ public:
         }
     };
 
+    const std::string &get_str() const {
+        return get<std::string>();
+    }
+
     const long &get_int() const {
         return get<long>();
     }

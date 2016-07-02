@@ -3,6 +3,7 @@
 #include "function_context.h"
 #include "functions/add.h"
 #include "functions/vec.h"
+#include "functions/str.h"
 #include "functions/get_element.h"
 
 LISP_FUNC_IMPL(noop) {
@@ -28,6 +29,7 @@ function_context::function_context() {
     functions.push_back(function_pair("add", lisp_add_int_double_impl, lisp_add_int_double_matcher));
     functions.push_back(function_pair("vec", lisp_vec_impl, lisp_vec_matcher));
     functions.push_back(function_pair("get", lisp_get_impl, lisp_get_matcher));
+    functions.push_back(function_pair("str", lisp_str_impl, lisp_str_matcher));
 }
 
 type_instance function_context::apply_function(const type_instance &func_type, const std::vector<type_instance> &args) {
