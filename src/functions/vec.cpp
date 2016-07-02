@@ -11,8 +11,3 @@ LISP_FUNC_IMPL(vec) {
 LISP_FUNC_MATCHER(vec) {
     return true;
 }
-
-
-//type_instance vec::apply(const std::vector<type_instance> &args) {
-//    return type_instance::vec_copy(args);
-//}

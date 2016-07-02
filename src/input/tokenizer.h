@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-#include "../type.h"
 #include "../type_instance.h"
 
 struct token {

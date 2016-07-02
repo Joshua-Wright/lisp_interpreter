@@ -3,8 +3,8 @@
 #define LISP_FUNCTION_MATCHER_H
 
 #include <vector>
-#include "type.h"
-#include "functions/base_function.h"
+#include <string>
+#include "type_instance.h"
 
 class function_context;
 

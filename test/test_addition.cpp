@@ -9,13 +9,6 @@
 
 int main(int argc, char const *argv[]) {
 
-    { // test without evaluation
-        type_instance arg1(1);
-        type_instance arg2(2);
-        std::vector<type_instance> args{arg1, arg2};
-        type_instance result = global_function_context.apply_function("add", args);
-        test(result.get<long>() == 3, "addition error");
-    }
     { // test the evaluator too
         std::string expression = "(add (add 12 30) (add 3 4))";
         ast_node head = parse_expression(expression);

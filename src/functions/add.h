@@ -3,9 +3,8 @@
 #define LISP_ADD_H
 
 #include <vector>
-#include "base_function.h"
+#include "../type_instance.h"
 #include "../function_context.h"
-#include "../type.h"
 
 
 LISP_FUNC_IMPL(add_ints);

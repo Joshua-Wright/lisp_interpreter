@@ -1,7 +1,6 @@
 // (c) Copyright 2016 Josh Wright
 #pragma once
 
-#include "../type.h"
 #include "tokenizer.h"
 #include "../function_context.h"
 

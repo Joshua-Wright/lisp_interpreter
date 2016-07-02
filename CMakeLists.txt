@@ -23,11 +23,8 @@ set(SOURCE_FILES
         src/input/evaluator.h
         src/input/tokenizer.cpp
         src/input/tokenizer.h
-        src/type.cpp
-        src/type.h
         src/functions/add.cpp
         src/functions/add.h
-        src/functions/base_function.h
         src/functions/vec.cpp
         src/functions/vec.h
         src/functions/get_element.h

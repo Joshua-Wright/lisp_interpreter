@@ -10,7 +10,6 @@ class type_instance;
 #include <list>
 #include <type_traits>
 #include <boost/variant.hpp>
-#include "functions/base_function.h"
 #include "debug.h"
 
 // simple wrapper to distinguish function identifiers from literal strings
