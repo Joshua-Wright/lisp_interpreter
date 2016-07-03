@@ -30,6 +30,9 @@ void evaluate_literals(ast_node &head) {
             head.val = type_instance(i);
             break;
         }
+        case token::STRING:
+            head.val = type_instance(head.val_token.literal);
+            break;
         default:
             throw std::runtime_error("bad token in tree");
     }
@@ -73,6 +76,22 @@ class token_stream {
         return (c >= '0' && c <= '9') || c == '.';
     }
 
+    /**
+     * assumes that the leading " has already been consumed
+     */
+    std::string get_string() {
+        std::string out;
+        char c;
+        while ((c = (char) instream.get()) != '"') {
+            if (c == '\\') {
+                out.push_back((char) instream.get());
+            } else {
+                out.push_back(c);
+            }
+        }
+        return out;
+    }
+
 public:
     token_stream(const std::string &in) : buffer_full(false), instream(in) { }
 
@@ -111,6 +130,8 @@ public:
             } else {
                 return token(buf, token::INT);
             };
+        } else if (c == '"') {
+            return token(get_string(), token::STRING);
         } else {
             throw std::runtime_error("unknown character: "
                                      + std::to_string(c)
@@ -147,6 +168,7 @@ ast_node parse_expression(token_stream &in) {
             case token::IDENTIFIER:
             case token::INT:
             case token::DECIMAL:
+            case token::STRING:
                 cur.children.push_back(ast_node(t));
                 break;
             case token::OPEN_PARENTHESIS:

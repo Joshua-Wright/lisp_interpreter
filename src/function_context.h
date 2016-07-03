@@ -37,12 +37,11 @@ public:
 
     function_context();
 
-    // todo destructor?
+    type_instance apply_function(const type_instance &func_type, const std::vector<type_instance> &args);
 
     bool has_function_by_name(const std::string &name);
 
-    type_instance apply_function(const type_instance &func_type, const std::vector<type_instance> &args);
-
+    // todo destructor?
     type_instance apply_function(const type_instance &func_type, const type_instance &arg);
 };
 

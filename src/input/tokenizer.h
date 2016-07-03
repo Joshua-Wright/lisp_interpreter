@@ -10,6 +10,7 @@ struct token {
     enum token_type {
         OPEN_PARENTHESIS,
         CLOSE_PARENTHESIS,
+        STRING,
         IDENTIFIER,
         INT,
         DECIMAL,
@@ -18,9 +19,9 @@ struct token {
     token_type type;
     std::string literal;
 
-    token(const std::string &value, token_type type) : literal(value), type(type) { }
+    token(const std::string &value, token_type type) : type(type), literal(value) { }
 
-    token() : literal(""), type(NA) { }
+    token() : type(NA), literal("") { }
 };
 
 struct ast_node {

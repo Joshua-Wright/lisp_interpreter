@@ -17,9 +17,9 @@ type_instance evaluate_ast(const ast_node &head, function_context &context) {
         child_results.push_back(evaluate_ast(head.children[i], context));
     }
     // finally, evaluate this expression
-    if (head.val.is<long>() || head.val.is<double>()) {
+    if (head.val.is_int() || head.val.is_decimal() || head.val.is_str()) {
         return head.val;
-    } else if (head.val.is<identifier>()) {
+    } else if (head.val.is_identifier()) {
         // functions must be applied
         // assume all identifiers refer to functions
         // todo this will break when we have variables (e.g. from user defined functions)
@@ -34,3 +34,10 @@ type_instance evaluate_ast(const ast_node &head, function_context &context) {
 
 #pragma clang diagnostic pop
 
+type_instance evaluate(const std::string &expression, function_context &context) {
+    return evaluate_ast(parse_expression(expression), context);
+}
+
+type_instance evaluate(const std::string &expression) {
+    return evaluate_ast(parse_expression(expression), global_function_context);
+}

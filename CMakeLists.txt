@@ -10,6 +10,7 @@ project(lisp)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconcepts")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgtest")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -40,5 +41,6 @@ set(TEST_FILES
         test/add.h
         test/map.h
         test/str.h
-        test/vec.h test/get.h)
+        test/vec.h
+        test/get.h)
 add_executable(all_test ${SOURCE_FILES} ${TEST_FILES})
