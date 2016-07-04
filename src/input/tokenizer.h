@@ -34,7 +34,7 @@ struct ast_node {
 };
 
 
-ast_node parse_expression(const std::string &input);
+std::vector<ast_node> parse_expression(const std::string &input);
 
 void print_ast(const ast_node &head, size_t depth = 0);
 

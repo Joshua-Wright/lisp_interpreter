@@ -34,7 +34,7 @@ void evaluate_literals(ast_node &head) {
             head.val = type_instance(head.val_token.literal);
             break;
         default:
-            throw std::runtime_error("bad token in tree");
+            throw std::runtime_error("tokenizer -> evaluate_literals -> bad token in tree");
     }
 }
 
@@ -95,6 +95,22 @@ class token_stream {
 public:
     token_stream(const std::string &in) : buffer_full(false), instream(in) { }
 
+    bool has_next() {
+        char c;
+        while (true) {
+            if (instream.eof() || instream.bad()) {
+                return false;
+            }
+            c = (char) instream.get();
+            if (c == -1) {
+                return false;
+            } else if (!is_whitespace(c)) {
+                instream.putback(c);
+                return true;
+            }
+        }
+    }
+
     token get() {
         if (buffer_full) {
             buffer_full = false;
@@ -102,9 +118,8 @@ public:
         }
         char c;
         do {
-            c = instream.get();
+            c = (char) instream.get();
         } while (is_whitespace(c));
-
 
         if (c == '(') {
             return token("(", token::OPEN_PARENTHESIS);
@@ -133,7 +148,7 @@ public:
         } else if (c == '"') {
             return token(get_string(), token::STRING);
         } else {
-            throw std::runtime_error("unknown character: "
+            throw std::runtime_error("unknown character while tokenizing: "
                                      + std::to_string(c)
                                      + ", " + std::string(&c, 1));
         }
@@ -157,7 +172,7 @@ public:
 
 ast_node parse_expression(token_stream &in) {
     if (in.get().type != token::OPEN_PARENTHESIS) {
-        throw std::runtime_error("invalid token");
+        throw std::runtime_error("invalid token: ");
     }
 
     // this first one is the function call
@@ -178,16 +193,21 @@ ast_node parse_expression(token_stream &in) {
             case token::CLOSE_PARENTHESIS:
                 return cur;
             default:
-                throw std::runtime_error("bad token");
+                throw std::runtime_error("parse_expression: bad token");
         }
     }
 }
 
-ast_node parse_expression(const std::string &input) {
+std::vector<ast_node> parse_expression(const std::string &input) {
     token_stream stream(input);
-    ast_node head_node = parse_expression(stream);
-    evaluate_literals(head_node);
-    return head_node;
+    std::vector<ast_node> head_nodes;
+//    ast_node head_node(token("", token::NA), false);
+    while (stream.has_next()) {
+        ast_node head_node= parse_expression(stream);
+        evaluate_literals(head_node);
+        head_nodes.push_back(head_node);
+    }
+    return head_nodes;
 }
 
 

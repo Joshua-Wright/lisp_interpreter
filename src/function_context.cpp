@@ -26,6 +26,7 @@ function_context::function_pair function_context::get_function(const std::string
 }
 
 #define ADD_FUNCTION(name, identifier) functions.push_back(function_pair(name, lisp_ ## identifier ## _impl, lisp_ ## identifier ## _matcher));
+
 function_context::function_context() {
     ADD_FUNCTION("add", add_ints);
     ADD_FUNCTION("add", add_int_double);
@@ -45,13 +46,25 @@ type_instance function_context::apply_function(const type_instance &func_type, c
     return apply_function(func_type, vec(1, arg));
 }
 
-bool function_context::has_function_by_name(const std::string &name) {
+bool function_context::has_function(const std::string &name) {
     for (function_pair &p: functions) {
         if (p.name == name) {
             return true;
         }
     }
     return false;
+}
+
+bool function_context::has_variable(const std::string &name) {
+    return variables.find(name) != variables.end();
+}
+
+void function_context::add_variable(const std::string &name, const type_instance &value) {
+    variables[name] = value;
+}
+
+type_instance function_context::get_variable(const std::string &name) {
+    return variables[name];
 }
 
 

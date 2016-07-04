@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include "type_instance.h"
 
 class function_context;
@@ -30,6 +31,7 @@ class function_context {
 
     // todo use a map keyed by function name for better efficiency
     std::vector<function_pair> functions;
+    std::unordered_map<std::string, type_instance> variables;
 
     function_pair get_function(const std::string &name, const std::vector<type_instance> &arg_types);
 
@@ -39,7 +41,13 @@ public:
 
     type_instance apply_function(const type_instance &func_type, const std::vector<type_instance> &args);
 
-    bool has_function_by_name(const std::string &name);
+    bool has_function(const std::string &name);
+
+    bool has_variable(const std::string &name);
+
+    void add_variable(const std::string &name, const type_instance& value);
+
+    type_instance get_variable(const std::string &name);
 
     // todo destructor?
     type_instance apply_function(const type_instance &func_type, const type_instance &arg);

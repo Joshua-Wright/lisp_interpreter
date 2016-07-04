@@ -34,7 +34,8 @@ set(SOURCE_FILES
         src/functions/str.cpp
         src/functions/str.h
         src/functions/map.cpp
-        src/functions/map.h)
+        src/functions/map.h
+        )
 
 set(TEST_FILES
         test/all_tests.cpp
@@ -42,5 +43,6 @@ set(TEST_FILES
         test/map.h
         test/str.h
         test/vec.h
-        test/get.h)
+        test/get.h
+        test/var.h)
 add_executable(all_test ${SOURCE_FILES} ${TEST_FILES})
