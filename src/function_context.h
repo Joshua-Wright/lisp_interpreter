@@ -1,13 +1,15 @@
 // (c) Copyright 2016 Josh Wright
+
+class function_context;
+
 #ifndef LISP_FUNCTION_MATCHER_H
 #define LISP_FUNCTION_MATCHER_H
 
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include "functions/user_defined_function.h"
 #include "type_instance.h"
-
-class function_context;
 
 #define LISP_FUNC_IMPL(identifier) type_instance lisp_ ## identifier ## _impl(const std::vector<type_instance> &args, function_context *context)
 #define LISP_FUNC_MATCHER(identifier) bool lisp_ ## identifier ## _matcher(const std::vector<type_instance> &args)
@@ -21,6 +23,8 @@ typedef decltype(&lisp_noop_matcher) type_lisp_func_matcher;
 
 class function_context {
 
+    function_context *parent_context;
+
     struct function_pair {
         type_lisp_func_impl func;
         type_lisp_func_matcher matcher;
@@ -31,13 +35,19 @@ class function_context {
 
     // todo use a map keyed by function name for better efficiency
     std::vector<function_pair> functions;
+    std::vector<user_defined_function> user_defined_functions;
     std::unordered_map<std::string, type_instance> variables;
 
-    function_pair get_function(const std::string &name, const std::vector<type_instance> &arg_types);
+    function_pair get_function(const std::string &name, const std::vector<type_instance> &args);
+
+    bool has_user_defined_function(const std::string &name);
 
 public:
 
-    function_context();
+    function_context(const std::initializer_list<function_pair> &functions);
+
+    function_context(function_context &parent_context);
+
 
     type_instance apply_function(const type_instance &func_type, const std::vector<type_instance> &args);
 
@@ -45,13 +55,16 @@ public:
 
     bool has_variable(const std::string &name);
 
-    void add_variable(const std::string &name, const type_instance& value);
+    void add_variable(const std::string &name, const type_instance &value);
 
     type_instance get_variable(const std::string &name);
+
+    void add_function(user_defined_function &function);
 
     // todo destructor?
     type_instance apply_function(const type_instance &func_type, const type_instance &arg);
 };
+
 
 extern function_context global_function_context;
 

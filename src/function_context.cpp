@@ -16,29 +16,25 @@ LISP_FUNC_MATCHER(noop) {
 }
 
 
-function_context::function_pair function_context::get_function(const std::string &name, const std::vector<type_instance> &arg_types) {
+function_context::function_pair function_context::get_function(const std::string &name, const std::vector<type_instance> &args) {
     for (function_pair &p : functions) {
-        if (p.name == name && (*p.matcher)(arg_types)) {
+        if (p.name == name && (*p.matcher)(args)) {
             return p;
         }
+    }
+    if (parent_context != nullptr) {
+        return parent_context->get_function(name, args);
     }
     throw std::runtime_error("function not found: " + name);
 }
 
-#define ADD_FUNCTION(name, identifier) functions.push_back(function_pair(name, lisp_ ## identifier ## _impl, lisp_ ## identifier ## _matcher));
-
-function_context::function_context() {
-    ADD_FUNCTION("add", add_ints);
-    ADD_FUNCTION("add", add_int_double);
-    ADD_FUNCTION("vec", vec);
-    ADD_FUNCTION("get", get);
-    ADD_FUNCTION("str", str);
-    ADD_FUNCTION("map", map_vec);
-    ADD_FUNCTION("map", map_splat);
-}
-
 type_instance function_context::apply_function(const type_instance &func_type, const std::vector<type_instance> &args) {
-    function_pair func = get_function(func_type.get<identifier>().str, args);
+    for (auto &f : user_defined_functions) {
+        if (f.get_name() == func_type.get_identifier().str && f.matches(args)) {
+            return f.apply(args);
+        }
+    }
+    function_pair func = get_function(func_type.get_identifier().str, args);
     return (*func.func)(args, this);
 }
 
@@ -52,10 +48,16 @@ bool function_context::has_function(const std::string &name) {
             return true;
         }
     }
-    return false;
+    if (has_user_defined_function(name)) {
+        return true;
+    }
+    return (parent_context != nullptr && parent_context->has_variable(name));
 }
 
 bool function_context::has_variable(const std::string &name) {
+    if (parent_context != nullptr && parent_context->has_variable(name)) {
+        return true;
+    }
     return variables.find(name) != variables.end();
 }
 
@@ -64,8 +66,42 @@ void function_context::add_variable(const std::string &name, const type_instance
 }
 
 type_instance function_context::get_variable(const std::string &name) {
-    return variables[name];
+    if (variables.find(name) != variables.end()) {
+        return variables[name];
+    }
+    if (parent_context != nullptr && parent_context->has_variable(name)) {
+        return parent_context->get_variable(name);
+    }
+    throw std::runtime_error("no variable found: " + name);
+}
+
+function_context::function_context(const std::initializer_list<function_pair> &functions) : parent_context(nullptr), functions(functions) {
+}
+
+function_context::function_context(function_context &parent) : parent_context(&parent) {
+}
+
+void function_context::add_function(user_defined_function &function) {
+    user_defined_functions.push_back(function);
+}
+
+bool function_context::has_user_defined_function(const std::string &name) {
+    for (auto &f : user_defined_functions) {
+        if (f.get_name() == name) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
-function_context global_function_context;
+#define FUNCTION(name, identifier) {name, lisp_ ## identifier ## _impl, lisp_ ## identifier ## _matcher}
+function_context global_function_context({
+                                                 FUNCTION("add", add_ints),
+                                                 FUNCTION("add", add_int_double),
+                                                 FUNCTION("vec", vec),
+                                                 FUNCTION("get", get),
+                                                 FUNCTION("str", str),
+                                                 FUNCTION("map", map_vec),
+                                                 FUNCTION("map", map_splat),
+                                         });

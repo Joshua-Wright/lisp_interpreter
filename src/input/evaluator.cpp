@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <stdexcept>
+#include "../functions/user_defined_function.h"
 #include "evaluator.h"
 #include "../debug.h"
 
@@ -19,6 +20,19 @@ type_instance evaluate_ast(const ast_node &head, function_context &context) {
                 evaluate_ast(head.children.at(1), context)
         );
         return context.get_variable(head.children.at(0).val.get_identifier().str);
+    } else if (head.val.is_identifier() && head.val.get_identifier().str == "defn") {
+
+        std::string function_name = head.children.at(0).val_token.literal;
+        std::vector<std::string> arg_names(head.children.at(1).children.size() + 1);
+        arg_names[0] = head.children.at(1).val_token.literal;
+        for (size_t i = 1; i < arg_names.size(); i++) {
+            arg_names[i] = head.children.at(1).children.at(i).val_token.literal;
+        }
+        ast_node function_head_node = head.children.at(2);
+
+        user_defined_function function(function_name, arg_names, function_head_node, context);
+        context.add_function(function);
+        return type_instance({function_name});
     }
 
     // evaluate all children

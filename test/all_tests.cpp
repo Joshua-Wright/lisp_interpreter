@@ -7,6 +7,7 @@
 #include "str.h"
 #include "var.h"
 #include "vec.h"
+#include "func.h"
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
