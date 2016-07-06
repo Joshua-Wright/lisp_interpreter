@@ -11,6 +11,7 @@ class type_instance;
 #include <type_traits>
 #include <boost/variant.hpp>
 #include "debug.h"
+#include "function_context.h"
 
 // simple wrapper to distinguish function identifiers from literal strings
 struct identifier {

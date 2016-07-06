@@ -11,42 +11,36 @@ class function_context;
 #include "functions/user_defined_function.h"
 #include "type_instance.h"
 
-#define LISP_FUNC_IMPL(identifier) type_instance lisp_ ## identifier ## _impl(const std::vector<type_instance> &args, function_context *context)
-#define LISP_FUNC_MATCHER(identifier) bool lisp_ ## identifier ## _matcher(const std::vector<type_instance> &args)
+#define __LISP_FUNCTION_NAME(name) __lisp_##name
+#define __LISP_FUNC_PROTOTYPE(name) \
+    type_instance __LISP_FUNCTION_NAME(name)(const std::vector<type_instance> &args, function_context *context)
 
-LISP_FUNC_IMPL(noop);
+#define LISP_FUNCTION(name) \
+    __LISP_FUNC_PROTOTYPE(name); \
+    add_function(#name, &__LISP_FUNCTION_NAME(name)); \
+    __LISP_FUNC_PROTOTYPE(name)
 
-LISP_FUNC_MATCHER(noop);
+__LISP_FUNC_PROTOTYPE(noop);
 
-typedef decltype(&lisp_noop_impl) type_lisp_func_impl;
-typedef decltype(&lisp_noop_matcher) type_lisp_func_matcher;
+typedef decltype(&__LISP_FUNCTION_NAME(noop)) type_lisp_func;
 
 class function_context {
 
     function_context *parent_context;
 
-    struct function_pair {
-        type_lisp_func_impl func;
-        type_lisp_func_matcher matcher;
-        const std::string name;
-
-        function_pair(const std::string &name, type_lisp_func_impl f, type_lisp_func_matcher m) : func(f), matcher(m), name(name) { }
-    };
-
-    // todo use a map keyed by function name for better efficiency
-    std::vector<function_pair> functions;
     std::vector<user_defined_function> user_defined_functions;
+    std::unordered_map<std::string, type_lisp_func> global_functions;
     std::unordered_map<std::string, type_instance> variables;
-
-    function_pair get_function(const std::string &name, const std::vector<type_instance> &args);
 
     bool has_user_defined_function(const std::string &name);
 
+    type_lisp_func get_function(const std::string &name, const std::vector<type_instance> &args);
+
 public:
 
-    function_context(const std::initializer_list<function_pair> &functions);
+    function_context(function_context *parent_context);
 
-    function_context(function_context &parent_context);
+    void _add_function(const std::string &name, type_lisp_func func);
 
 
     type_instance apply_function(const type_instance &func_type, const std::vector<type_instance> &args);
@@ -66,6 +60,8 @@ public:
 };
 
 
-extern function_context global_function_context;
+function_context &global_function_context();
+
+void add_function(const std::string &name, type_lisp_func function);
 
 #endif //LISP_FUNCTION_MATCHER_H

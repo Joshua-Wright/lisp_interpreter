@@ -7,7 +7,7 @@
 #include "../src/input/evaluator.h"
 
 TEST(Variables, Simple) {
-    global_function_context.add_variable("seven", type_instance(7));
+    global_function_context().add_variable("seven", type_instance(7));
     type_instance result = evaluate("(add seven 4)");
     ASSERT_EQ(result.get_int(), 7 + 4);
 }

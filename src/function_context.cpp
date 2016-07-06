@@ -1,27 +1,21 @@
 // (c) Copyright 2016 Josh Wright
 #include <algorithm>
+//#include "functions/add.h"
+
+//#include "functions/vec.h"
+//#include "functions/str.h"
+//#include "functions/get_element.h"
+//#include "functions/map.h"
+
 #include "function_context.h"
-#include "functions/add.h"
-#include "functions/vec.h"
-#include "functions/str.h"
-#include "functions/get_element.h"
-#include "functions/map.h"
-
-LISP_FUNC_IMPL(noop) {
-    return args[0];
-}
-
-LISP_FUNC_MATCHER(noop) {
-    return args.size() > 0;
-}
 
 
-function_context::function_pair function_context::get_function(const std::string &name, const std::vector<type_instance> &args) {
-    for (function_pair &p : functions) {
-        if (p.name == name && (*p.matcher)(args)) {
-            return p;
-        }
+type_lisp_func function_context::get_function(const std::string &name, const std::vector<type_instance> &args) {
+    auto f = global_functions.find(name);
+    if (f != global_functions.end()) {
+        return f->second;
     }
+
     if (parent_context != nullptr) {
         return parent_context->get_function(name, args);
     }
@@ -34,8 +28,8 @@ type_instance function_context::apply_function(const type_instance &func_type, c
             return f.apply(args);
         }
     }
-    function_pair func = get_function(func_type.get_identifier().str, args);
-    return (*func.func)(args, this);
+    auto func = get_function(func_type.get_identifier().str, args);
+    return (func)(args, this);
 }
 
 type_instance function_context::apply_function(const type_instance &func_type, const type_instance &arg) {
@@ -43,10 +37,8 @@ type_instance function_context::apply_function(const type_instance &func_type, c
 }
 
 bool function_context::has_function(const std::string &name) {
-    for (function_pair &p: functions) {
-        if (p.name == name) {
-            return true;
-        }
+    if (global_functions.find(name) != global_functions.end()) {
+        return true;
     }
     if (has_user_defined_function(name)) {
         return true;
@@ -75,12 +67,6 @@ type_instance function_context::get_variable(const std::string &name) {
     throw std::runtime_error("no variable found: " + name);
 }
 
-function_context::function_context(const std::initializer_list<function_pair> &functions) : parent_context(nullptr), functions(functions) {
-}
-
-function_context::function_context(function_context &parent) : parent_context(&parent) {
-}
-
 void function_context::add_function(user_defined_function &function) {
     user_defined_functions.push_back(function);
 }
@@ -95,13 +81,19 @@ bool function_context::has_user_defined_function(const std::string &name) {
 }
 
 
-#define FUNCTION(name, identifier) {name, lisp_ ## identifier ## _impl, lisp_ ## identifier ## _matcher}
-function_context global_function_context({
-                                                 FUNCTION("add", add_ints),
-                                                 FUNCTION("add", add_int_double),
-                                                 FUNCTION("vec", vec),
-                                                 FUNCTION("get", get),
-                                                 FUNCTION("str", str),
-                                                 FUNCTION("map", map_vec),
-                                                 FUNCTION("map", map_splat),
-                                         });
+void function_context::_add_function(const std::string &name, type_lisp_func func) {
+    global_functions[name] = func;
+}
+
+function_context::function_context(function_context *parent_context) : parent_context(parent_context) { }
+
+function_context &global_function_context() {
+    static function_context *instance = new function_context(nullptr);
+    return *instance;
+}
+
+
+void add_function(const std::string &name, type_lisp_func function) {
+    global_function_context()._add_function(name, function);
+}
+

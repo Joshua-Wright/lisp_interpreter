@@ -7,7 +7,7 @@
 #include "../src/input/evaluator.h"
 
 TEST(Func, ParentContext) {
-    function_context context(global_function_context);
+    function_context context(global_function_context());
     context.add_variable("a", type_instance(2));
     auto result = evaluate("(add a)", context);
     ASSERT_EQ(result.get_int(), 2);

@@ -75,5 +75,5 @@ type_instance evaluate(const std::string &expression, function_context &context)
 }
 
 type_instance evaluate(const std::string &expression) {
-    return evaluate(expression, global_function_context);
+    return evaluate(expression, global_function_context());
 }

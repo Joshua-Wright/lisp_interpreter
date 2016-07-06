@@ -3,18 +3,28 @@
 #define LISP_ADD_H
 
 #include <vector>
-#include "../type_instance.h"
 #include "../function_context.h"
+//#include "../type_instance.h"
 
 
-LISP_FUNC_IMPL(add_ints);
-
-LISP_FUNC_MATCHER(add_ints);
 
 
-LISP_FUNC_IMPL(add_int_double);
+__LISP_FUNC_PROTOTYPE(add);
+std::string add = "add";
 
-LISP_FUNC_MATCHER(add_int_double);
+add_function(add, &__lisp_add);
+
+__LISP_FUNC_PROTOTYPE(add) {
+    return type_instance(0);
+}
+
+//
+//LISP_FUNC_MATCHER(add_ints);
+//
+//
+//LISP_FUNC_IMPL(add_int_double);
+//
+//LISP_FUNC_MATCHER(add_int_double);
 
 
 #endif //LISP_ADD_H
