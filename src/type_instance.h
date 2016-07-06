@@ -11,7 +11,6 @@ class type_instance;
 #include <type_traits>
 #include <boost/variant.hpp>
 #include "debug.h"
-#include "function_context.h"
 
 // simple wrapper to distinguish function identifiers from literal strings
 struct identifier {
@@ -21,6 +20,7 @@ struct identifier {
 typedef std::vector<type_instance> vec;
 
 typedef boost::variant<
+        bool,
         long,
         double,
         std::string,
@@ -61,7 +61,7 @@ public:
         return get<long>();
     }
 
-    const double &get_decimal() const {
+    const double &get_double() const {
         return get<double>();
     }
 
@@ -81,7 +81,7 @@ public:
         return is<long>();
     }
 
-    bool is_decimal() const {
+    bool is_double() const {
         return is<double>();
     }
 
@@ -91,6 +91,14 @@ public:
 
     bool is_vec() const {
         return is<vec>();
+    }
+
+    bool is_bool() const {
+        return is<bool>();
+    }
+
+    bool get_bool() const {
+        return get<bool>();
     }
 };
 

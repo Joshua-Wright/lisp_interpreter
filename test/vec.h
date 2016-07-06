@@ -15,7 +15,7 @@ TEST(Vec, Numbers) {
     type_instance result = evaluate("(vec 1 2 3 3.2)");
     ASSERT_EQ(result.get_vec().size(), 4);
     ASSERT_EQ(result.get_vec()[0].get_int(), 1);
-    ASSERT_EQ(result.get_vec()[3].get_decimal(), 3.2);
+    ASSERT_EQ(result.get_vec()[3].get_double(), 3.2);
 }
 
 TEST(Vec, Func) {

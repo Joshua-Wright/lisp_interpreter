@@ -31,6 +31,8 @@ struct ast_node {
     std::vector<ast_node> children;
 
     ast_node(const token &val, const bool called = false) : val_token(val), is_function_call(called) { }
+
+    ast_node(type_instance val) : val(val) { }
 };
 
 

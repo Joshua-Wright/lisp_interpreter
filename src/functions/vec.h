@@ -5,5 +5,3 @@
 #include "../function_context.h"
 
 LISP_FUNC_IMPL(vec);
-
-LISP_FUNC_MATCHER(vec);

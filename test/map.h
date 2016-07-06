@@ -6,12 +6,6 @@
 #include "../src/input/tokenizer.h"
 #include "../src/input/evaluator.h"
 
-
-TEST(Map, Splat) {
-    type_instance result = evaluate("(str (map str 15 3))");
-    ASSERT_EQ(result.get_str(), "(15, 3)");
-}
-
 TEST(Map, Vec) {
     type_instance result = evaluate("(str (map str (vec 15 3 7)))");
     ASSERT_EQ(result.get_str(), "(15, 3, 7)");

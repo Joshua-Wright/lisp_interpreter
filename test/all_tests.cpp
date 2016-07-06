@@ -2,12 +2,14 @@
 #include <iostream>
 #include <gtest/gtest.h>
 #include "add.h"
+#include "vec.h"
 #include "get.h"
 #include "map.h"
 #include "str.h"
+#include "bool.h"
+#include "if.h"
 #include "var.h"
-#include "vec.h"
-#include "func.h"
+//#include "func.h"
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

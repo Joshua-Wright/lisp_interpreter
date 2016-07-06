@@ -1,13 +1,13 @@
 // (c) Copyright 2016 Josh Wright
 #include "vec.h"
-#include "../debug.h"
+#include "../input/evaluator.h"
 #include "../function_context.h"
 
 
 LISP_FUNC_IMPL(vec) {
-    return type_instance(args);
-}
-
-LISP_FUNC_MATCHER(vec) {
-    return true;
+    vec out(args.size());
+    for (size_t i = 0; i < out.size(); i++) {
+        out[i] = evaluate_ast(args[i], context);
+    }
+    return type_instance(out);
 }
