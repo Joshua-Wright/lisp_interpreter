@@ -1,7 +1,5 @@
 // (c) Copyright 2016 Josh Wright
 
-class type_instance;
-
 #ifndef LISP_TYPE_INSTANCE
 #define LISP_TYPE_INSTANCE
 
@@ -10,7 +8,7 @@ class type_instance;
 #include <list>
 #include <type_traits>
 #include <boost/variant.hpp>
-#include "debug.h"
+#include "forward_declarations.h"
 
 // simple wrapper to distinguish function identifiers from literal strings
 struct identifier {
@@ -92,6 +90,7 @@ public:
     bool is_vec() const {
         return is<vec>();
     }
+
 
     bool is_bool() const {
         return is<bool>();

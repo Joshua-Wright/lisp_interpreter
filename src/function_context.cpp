@@ -1,6 +1,6 @@
 // (c) Copyright 2016 Josh Wright
 #include <algorithm>
-
+#include "forward_declarations.h"
 #include "functions/type_casts/str.h"
 #include "functions/type_casts/bool.h"
 #include "functions/add.h"
@@ -9,61 +9,54 @@
 #include "functions/map.h"
 #include "functions/if.h"
 #include "functions/var.h"
-
+#include "functions/defn.h"
 #include "function_context.h"
 
 
 type_lisp_func_impl function_context::get_function(const std::string &name, const std::vector<ast_node> &args) {
-//    for (function_pair &p : functions) {
-//        if (p.name == name && (*p.matcher)(args)) {
-//            return p;
-//        }
-//    }
-//    if (parent_context != nullptr) {
-//        return parent_context->get_function(name, args);
-//    }
     auto f = global_functions.find(name);
-    if (f == global_functions.end()) {
-        // todo separate class for this exception
-        throw std::runtime_error("Function not found: " + name);
+    if (f != global_functions.end()) {
+        return f->second;
     }
-    return f->second;
-//    throw std::runtime_error("function not found: " + name);
+    return nullptr;
+}
+
+type_instance function_context::apply_function(const type_instance &func_type, const std::vector<ast_node> &args,
+                                               function_context &context) {
+    // todo throw exception for non-function type
+    auto user_func_p = user_defined_functions.find(func_type.get_identifier().str);
+    if (user_func_p != user_defined_functions.end()) {
+        return user_func_p->second.apply(args);
+    }
+    auto func = get_function(func_type.get_identifier().str, args);
+    if (func != nullptr) {
+        return (*func)(args, context);
+    }
+    if (parent_context != nullptr) {
+        return parent_context->apply_function(func_type, args, context);
+    }
+    // todo separate class for this exception
+    throw std::runtime_error("Function not found: " + func_type.get_identifier().str);
 }
 
 type_instance function_context::apply_function(const type_instance &func_type, const std::vector<ast_node> &args) {
-//    for (auto &f : user_defined_functions) {
-//        if (f.get_name() == func_type.get_identifier().str && f.matches(args)) {
-//            return f.apply(args);
-//        }
-//    }
-    auto func = get_function(func_type.get_identifier().str, args);
-    return (*func)(args, *this);
+    return this->apply_function(func_type, args, *this);
 }
 
-
-//bool function_context::has_function(const std::string &name) {
-//    for (function_pair &p: functions) {
-//        if (p.name == name) {
-//            return true;
-//        }
-//    }
-//    if (has_user_defined_function(name)) {
-//        return true;
-//    }
-//    return (parent_context != nullptr && parent_context->has_variable(name));
-//}
-
 bool function_context::has_variable(const std::string &name) {
-    if (parent_context != nullptr && parent_context->has_variable(name)) {
+    if (variables.find(name) != variables.end()) {
         return true;
     }
-    return variables.find(name) != variables.end();
+    if (parent_context != nullptr) {
+        return parent_context->has_variable(name);
+    }
+    return false;
 }
 
 void function_context::add_variable(const std::string &name, const type_instance &value) {
     variables[name] = value;
 }
+
 
 type_instance function_context::get_variable(const std::string &name) {
     if (variables.find(name) != variables.end()) {
@@ -75,24 +68,21 @@ type_instance function_context::get_variable(const std::string &name) {
     throw std::runtime_error("no variable found: " + name);
 }
 
-
 function_context::function_context(function_context &parent) : parent_context(&parent) {
 }
 
-void function_context::add_function(user_defined_function &function) {
-    user_defined_functions.push_back(function);
+void function_context::add_user_defined_function(user_defined_function function) {
+    user_defined_functions[function.get_name()] = function;
 }
 
 bool function_context::has_user_defined_function(const std::string &name) {
-    for (auto &f : user_defined_functions) {
-        if (f.get_name() == name) {
-            return true;
-        }
+    if (user_defined_functions.find(name) != user_defined_functions.end()) {
+        return true;
     }
-    return false;
+    return parent_context != nullptr && parent_context->has_user_defined_function(name);
 }
 
-function_context::function_context() {}
+function_context::function_context() { }
 
 function_context::function_context(const std::unordered_map<std::string, type_lisp_func_impl> &functions)
         : global_functions(functions), parent_context(nullptr) { }
@@ -108,5 +98,6 @@ function_context global_function_context(
                 {"if",   lisp_if_impl},
                 {"bool", lisp_bool_impl},
                 {"var",  lisp_var_impl},
+                {"defn", lisp_defn_impl},
         }
 );

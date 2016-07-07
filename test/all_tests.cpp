@@ -9,7 +9,7 @@
 #include "bool.h"
 #include "if.h"
 #include "var.h"
-//#include "func.h"
+#include "func.h"
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

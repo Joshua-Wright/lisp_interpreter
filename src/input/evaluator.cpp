@@ -3,8 +3,8 @@
 #include <vector>
 #include <stdexcept>
 //#include "../functions/user_defined_function.h"
-//#include "../debug.h"
 #include "evaluator.h"
+#include "tokenizer.h"
 
 type_instance evaluate_ast(const ast_node &head, function_context &context) {
     // handle variables first

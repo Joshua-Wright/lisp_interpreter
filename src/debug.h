@@ -34,6 +34,6 @@ void __debug_log(T v, const char *l, const char *f, int line, bool p) {
     std::cerr << l << "=" << v << std::endl;
 }
 
-#define debug_log(x) __debug_log(x, #x, __FILE__, __LINE__, true)
-#define debug_log_type(x) __debug_log(x, #x, __FILE__, __LINE__, true)
-#define debug_log_notype(x) __debug_log(x, #x, __FILE__, __LINE__, false)
+#define debug_log(x) __debug_log(x, #x, __FILE__, __LINE__, true);
+#define debug_log_type(x) __debug_log(x, #x, __FILE__, __LINE__, true);
+#define debug_log_notype(x) __debug_log(x, #x, __FILE__, __LINE__, false);

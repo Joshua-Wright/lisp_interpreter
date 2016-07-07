@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "tokenizer.h"
-#include "../debug.h"
+#include "token.h"
 
 
 void evaluate_literals(ast_node &head) {
@@ -201,9 +201,8 @@ ast_node parse_expression(token_stream &in) {
 std::vector<ast_node> parse_expression(const std::string &input) {
     token_stream stream(input);
     std::vector<ast_node> head_nodes;
-//    ast_node head_node(token("", token::NA), false);
     while (stream.has_next()) {
-        ast_node head_node= parse_expression(stream);
+        ast_node head_node = parse_expression(stream);
         evaluate_literals(head_node);
         head_nodes.push_back(head_node);
     }
@@ -232,6 +231,3 @@ void print_ast(const ast_node &head, size_t depth) {
         print_ast(n, depth + 1);
     }
 }
-
-
-

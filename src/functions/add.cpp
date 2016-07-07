@@ -18,7 +18,7 @@ type_instance add(const type_instance &a, const type_instance &b) {
         return type_instance(a.get_int() + b.get_int());
 
     }
-    throw std::runtime_error("bad args to add");
+    throw std::runtime_error("bad args to add. types: " + std::string(a.type().name()) + ", " + std::string(b.type().name()));
 }
 
 LISP_FUNC_IMPL(add) {

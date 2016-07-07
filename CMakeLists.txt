@@ -17,11 +17,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 
 set(SOURCE_FILES
+        src/ast_node.cpp
+        src/ast_node.h
         src/debug.h
+        src/forward_declarations.h
         src/function_context.cpp
         src/function_context.h
         src/functions/add.cpp
         src/functions/add.h
+        src/functions/defn.cpp
+        src/functions/defn.h
         src/functions/get.cpp
         src/functions/get.cpp
         src/functions/get.h
@@ -42,8 +47,11 @@ set(SOURCE_FILES
         src/functions/vec.h
         src/input/evaluator.cpp
         src/input/evaluator.h
+        src/input/token.cpp
+        src/input/token.h
         src/input/tokenizer.cpp
         src/input/tokenizer.h
+        src/type_instance.cpp
         src/type_instance.h
         )
 
@@ -55,7 +63,10 @@ set(TEST_FILES
         test/vec.h
         test/get.h
         test/var.h
-#        test/func.h
+        test/func.h
         test/bool.h
-        test/if.h)
+        test/if.h
+        )
+
 add_executable(all_test ${SOURCE_FILES} ${TEST_FILES})
+
